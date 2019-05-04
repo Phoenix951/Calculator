@@ -28,9 +28,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.degreeToYButton.clicked.connect(self.all_operation)
         self.sinButton.clicked.connect(self.all_operation)
         self.thirdRadicalButton.clicked.connect(self.all_operation)     
-        self.reverseButton.clicked.connect(self.all_operation)          
+        self.reverseButton.clicked.connect(self.all_operation)
+        self.procentButton.clicked.connect(self.all_operation)
         self.exponButton.clicked.connect(self.constants)
         self.numPIButton.clicked.connect(self.constants)
+        self.intInFloat.clicked.connect(self.int_in_float)
         self.equalButton.clicked.connect(self.equal_operation)
         self.clearAll.clicked.connect(self.new_number)
         self.deleteItem.clicked.connect(self.delete_item)
@@ -52,6 +54,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.Number = self.resultLine.text()
         self.Number += number
         return self.Number
+
+    def int_in_float(self):
+        Item = "."
+        number = self.resultLine.text()
+        if "." in number:
+            self.resultLine.setText(self.firstLineItem(""))
+        else:
+            self.resultLine.setText(self.firstLineItem(Item))
         
     def oneButton(self):
         Item = "1"
@@ -126,6 +136,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.required_oper = "3sqrt"
         elif sender.text() == "1/x":
             self.required_oper = "1/x"
+        elif sender.text() == "%":
+            self.required_oper = "procent"
 
         if self.Number == None:
             self.Number = self.resultLine.text()
@@ -142,8 +154,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # операция сложения
         if self.required_oper == "plus" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
-            self.secondNumber = int(self.Number)
+            self.firstNumber = float(self.firstLineNumber)
+            self.secondNumber = float(self.Number)
             self.result = self.firstNumber + self.secondNumber
             self.firstNumber = self.result
             self.key = "1"
@@ -152,8 +164,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.firstNumber = self.result
         # операция вычитания
         elif self.required_oper == "minus" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
-            self.secondNumber = int(self.Number)
+            self.firstNumber = float(self.firstLineNumber)
+            self.secondNumber = float(self.Number)
             self.result = self.firstNumber - self.secondNumber
             self.firstNumber = self.result
             self.key = "1"
@@ -162,8 +174,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.firstNumber = self.result
         # операция умножения
         elif self.required_oper == "mult" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
-            self.secondNumber = int(self.Number)
+            self.firstNumber = float(self.firstLineNumber)
+            self.secondNumber = float(self.Number)
             self.result = self.firstNumber * self.secondNumber
             self.firstNumber = self.result
             self.key = "1"
@@ -172,8 +184,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.firstNumber = self.result
         # операция деления
         elif self.required_oper == "div" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
-            self.secondNumber = int(self.Number)
+            self.firstNumber = float(self.firstLineNumber)
+            self.secondNumber = float(self.Number)
             self.result = self.firstNumber // self.secondNumber
             self.firstNumber = self.result
             self.key = "1"
@@ -182,7 +194,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.firstNumber = self.result
         # операция возведения в степень 2
         elif self.required_oper == "degr" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
+            self.firstNumber = float(self.firstLineNumber)
             self.result = self.firstNumber ** 2
             self.firstNumber = self.result
             self.key = "1"
@@ -191,8 +203,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.firstNumber = self.result
         # операция возведения в степень y
         elif self.required_oper == "degrToY" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
-            self.secondNumber = int(self.Number)
+            self.firstNumber = float(self.firstLineNumber)
+            self.secondNumber = float(self.Number)
             self.result = self.firstNumber ** self.secondNumber
             self.firstNumber = self.result
             self.key = "1"
@@ -201,25 +213,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.firstNumber = self.result
         # операция вывода из под корня
         elif self.required_oper == "sqrt":
-            self.firstNumber = int(self.firstLineNumber)
+            self.firstNumber = float(self.firstLineNumber)
             self.result = math.sqrt(self.firstNumber)
         # операция вычисления синуса
         elif self.required_oper == "sin":
-            self.firstNumber = int(self.firstLineNumber)
+            self.firstNumber = float(self.firstLineNumber)
             self.result = math.sin(self.firstNumber * math.pi / 180)
         # операция вычисления кубического корня
         elif self.required_oper == "3sqrt":
-            self.firstNumber = int(self.firstLineNumber)
+            self.firstNumber = float(self.firstLineNumber)
             self.result = math.pow(self.firstNumber, 1/3)
         # операция перевода числа в дробь
         elif self.required_oper == "1/x" and self.key == "0":
-            self.firstNumber = int(self.firstLineNumber)
+            self.firstNumber = float(self.firstLineNumber)
             self.result = (1 / self.firstNumber)
             self.firstNumber = self.result
             self.key = "1"
         elif self.required_oper == "1/x" and self.key == "1":
             self.result = (1 / self.firstNumber)
             self.firstNumber = self.result
+        # операция вычисления процента от числа
+        elif self.required_oper == "procent":
+            self.firstNumber = float(self.firstLineNumber)
+            self.secondNumber = float(self.Number)
+            self.result = (self.secondNumber * (0.01 * self.firstNumber))
   
         self.resultLine.clear()
         self.resultLine.setText(str(self.result))
